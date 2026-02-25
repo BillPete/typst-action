@@ -1,0 +1,2 @@
+tests/math.typ
+tests/valid.typ
