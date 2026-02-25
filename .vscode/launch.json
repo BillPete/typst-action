@@ -1,0 +1,27 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Run with TXT file.",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "entrypoint.py",
+            "console": "integratedTerminal",
+            "args": [
+                "tests/files.txt",
+                ""
+            ]
+        },
+        {
+            "name": "Python: Run with typst file",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "entrypoint.py",
+            "console": "integratedTerminal",
+            "args": [
+                "tests/valid.typ",
+                ""
+            ]
+        }
+    ]
+}
