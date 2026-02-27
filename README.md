@@ -1,13 +1,30 @@
-> [!NOTE]
-> This was quickly hacked to support globs in the `source_file` input.
-
 # Typst GitHub action
 
 Build Typst documents using GitHub workflows.
 
+This action uses the typst compiler to build pdf files 
+## Arguments:
+
+- ```source_file```
+  - Accepts paths to one or more source files (or directories, or globs).
+  - Multiple items must be provided as a multi-line string.
+  - If the path leads to an existing file, that file will be compiled.
+  - If a path leads to an existing directory, all ```.typ``` files in the directory will be compiled.
+  - If the path contains wildcards, all files matching the pattern will be compiled. 
+  - This argument is optional and is mutually exclusive with the ```path_file``` argument.  
+- ```path_file```
+  - Accepts a pathe to a text file that contains a list of paths (one path on each line).
+  - Each line of the text file may contain a fie name, directory name, or wildcard pattern.
+  - File names, directory names, and wildcard patterns will be treated as described above.
+  - This argument is optional and is mutually exclusive with the ```source_file``` argument.
+- ```options```
+  - Accepts command line options that will be used for the typst compiler.
+  - Each whitespace separated option must appear in a separate line of this argument.  
+  - This argument is optional.
+  
 ## Minimal example
 
-The following `.github/workflows/build.yaml` action compiles `main.typ` to `main.pdf` on every push.
+The following `.github/workflows/build.yaml` action compiles `main.typ` on every push.
 
 ```yaml
 name: Build Typst document
@@ -20,7 +37,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Typst
-        uses: lvignoli/typst-action@main
+        uses: BillPete/typst-action@main
         with:
           source_file: main.typ
 ```
@@ -67,17 +84,9 @@ jobs:
         with:
           name: "${{ github.ref_name }} — ${{ env.DATE }}"
           files: main.pdf
-
 ```
-
-Repository [lvignoli/typst-action-example](https://github.com/lvignoli/typst-action-example) provides an example setup on a whole repo.
-
 ## Notes
 
 - This action runs on the docker image shipped with the latest Typst.
   As long as Typst is in v0, changes of the CLI API are to be expected, breaking the workflow.
-  I'll update regularly.
 
-- I was hasty to tag for a v1. I have now deleted it.
-  As long as Typst is not in a stable state, the action will stay in v0.
-  You should use `lvignoli/typst-action@main` in the meantime.
