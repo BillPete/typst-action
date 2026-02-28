@@ -31,15 +31,25 @@ class TestAddFunction(unittest.TestCase):
     # action yml file, a null string is passed into that arg. All three args must be passed.  
 
     def test_run_with_source_file_arg(self):
-        # Compile a file using source file argument
+        # Compile a file using source file argument, passing in a file name.
         remove_glob('tests/*.pdf')          # clean up any existing output artifacts first
         command = ['/opt/homebrew/bin/python3', 'entrypoint.py', 'tests/math.typ', '', '']
         result = subprocess.run(command, capture_output=True, text=True)
         self.assertEqual(result.returncode,0)
         self.assertTrue(Path.exists(Path('tests/math.pdf')))
+        self.assertFalse(Path.exists(Path('tests/valid.pdf')))
+
+    def test_run_with_directory_as_arg(self):
+        # Compile a file using source file argument, passing in a directory name. 
+        remove_glob('tests/*.pdf')          # clean up any existing output artifacts first
+        command = ['/opt/homebrew/bin/python3', 'entrypoint.py', 'tests', '', '']
+        result = subprocess.run(command, capture_output=True, text=True)
+        self.assertEqual(result.returncode,0)
+        self.assertTrue(Path.exists(Path('tests/math.pdf')))
+        self.assertTrue(Path.exists(Path('tests/valid.pdf')))
 
     def test_run_with_path_file_arg(self):
-        # Compile a file using source file argument
+        # Compile a file using path file argument.  Should coompile both test files.
         remove_glob('tests/*.pdf')          # clean up any existing output artifacts first
         command = ['/opt/homebrew/bin/python3', 'entrypoint.py', '', '', 'tests/files.txt']
         result = subprocess.run(command, capture_output=True, text=True)
