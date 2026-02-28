@@ -21,9 +21,9 @@ def remove_glob(pattern: str):
 
 class TestAddFunction(unittest.TestCase):
 
-    # TODO Figure out why I need whole path to python to avoid "file not found exception"
-    python_path = '/opt/homebrew/bin/python3'
-
+    # store path to python interpreter.
+    python_path = 'python3'
+    
     # In routines below, path is a list with each whitespace separated command line arg
     # in a separate list item.
 
@@ -33,7 +33,7 @@ class TestAddFunction(unittest.TestCase):
     def test_run_with_source_file_arg(self):
         # Compile a file using source file argument, passing in a file name.
         remove_glob('tests/*.pdf')          # clean up any existing output artifacts first
-        command = ['/opt/homebrew/bin/python3', 'entrypoint.py', 'tests/math.typ', '', '']
+        command = [self.python_path, 'entrypoint.py', 'tests/math.typ', '', '']
         result = subprocess.run(command, capture_output=True, text=True)
         self.assertEqual(result.returncode,0)
         self.assertTrue(Path.exists(Path('tests/math.pdf')))
@@ -42,7 +42,7 @@ class TestAddFunction(unittest.TestCase):
     def test_run_with_directory_as_arg(self):
         # Compile a file using source file argument, passing in a directory name. 
         remove_glob('tests/*.pdf')          # clean up any existing output artifacts first
-        command = ['/opt/homebrew/bin/python3', 'entrypoint.py', 'tests', '', '']
+        command = [self.python_path, 'entrypoint.py', 'tests', '', '']
         result = subprocess.run(command, capture_output=True, text=True)
         self.assertEqual(result.returncode,0)
         self.assertTrue(Path.exists(Path('tests/math.pdf')))
@@ -51,7 +51,7 @@ class TestAddFunction(unittest.TestCase):
     def test_run_with_path_file_arg(self):
         # Compile a file using path file argument.  Should coompile both test files.
         remove_glob('tests/*.pdf')          # clean up any existing output artifacts first
-        command = ['/opt/homebrew/bin/python3', 'entrypoint.py', '', '', 'tests/files.txt']
+        command = [self.python_path, 'entrypoint.py', '', '', 'tests/files.txt']
         result = subprocess.run(command, capture_output=True, text=True)
         self.assertEqual(result.returncode,0)
         self.assertTrue(Path.exists(Path('tests/math.pdf')))
@@ -61,7 +61,7 @@ class TestAddFunction(unittest.TestCase):
         # Compile a file using source file argument and a path file argument.
         # Should result in a return code of 1 from entrypoint.py.
         remove_glob('tests/*.pdf')          # clean up any existing output artifacts first
-        command = ['/opt/homebrew/bin/python3', 'entrypoint.py', 'tests/math.typ', '', 'tests/files.txt']
+        command = [self.python_path, 'entrypoint.py', 'tests/math.typ', '', 'tests/files.txt']
         result = subprocess.run(command, capture_output=True, text=True)
         self.assertEqual(result.returncode,1)
         self.assertFalse(Path.exists(Path('tests/math.pdf')))
@@ -72,7 +72,7 @@ class TestAddFunction(unittest.TestCase):
         # Should produce a file called deps.txt in the tests directory.
         remove_glob('tests/*.pdf')          # clean up any existing output artifacts first
         remove_file('tests/deps.txt')
-        command = ['/opt/homebrew/bin/python3', 'entrypoint.py', 'tests/math.typ', '--deps=tests/deps.txt', '']
+        command = [self.python_path, 'entrypoint.py', 'tests/math.typ', '--deps=tests/deps.txt', '']
         result = subprocess.run(command, capture_output=True, text=True)
         self.assertEqual(result.returncode,0)
         self.assertTrue(Path.exists(Path('tests/math.pdf')))
