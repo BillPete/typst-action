@@ -9,7 +9,7 @@ def compile(filename: Path, options: list[str]) -> bool:
     Compiles a Typst file with the specified global options.
     Returns True if the typst command exited with status 0, False otherwise.
     """
-    command = ["typst"] + options + ["compile", str(filename)]
+    command = ["typst", "compile"] + options + [str(filename)]
     logging.debug("Running: " + " ".join(command))
 
     result = subprocess.run(command, capture_output=True, text=True)
@@ -22,13 +22,13 @@ def compile(filename: Path, options: list[str]) -> bool:
 
     return True
 
-def read_path_file(file_path: Path) -> list[str]:
+def read_path_file(file_path: str) -> list[str]:
     """
     Reads all lines from a text file and appends them to a list of strings.
     Empty lines and lines containing only whitespace are skipped.
     """
     lines = []
-    with open(file_path, "r") as f:
+    with open(Path(file_path), "r") as f:
         for line in f:
             lines.append(line)
         return strip_all_lines(lines)
@@ -98,6 +98,11 @@ def main():
         file_list = read_path_file(path_list[0])
     else:
         logging.info(f"Using source file arguments to find source files.")
+
+    if options:
+        logging.info(f"Using the following options: {' '.join(options)}")
+    else:
+        logging.info(f"No compile options were provided.")
 
     # Here we parse the file list, either from the argument list or from the path file
     # The parsing routine expands directories or wildcards in the file list. 
