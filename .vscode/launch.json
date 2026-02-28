@@ -8,8 +8,9 @@
             "program": "entrypoint.py",
             "console": "integratedTerminal",
             "args": [
-                "tests/files.txt",
-                ""
+                "",
+                "",
+                "tests/files.txt"
             ]
         },
         {
@@ -20,7 +21,29 @@
             "console": "integratedTerminal",
             "args": [
                 "tests/valid.typ",
+                "",
                 ""
+            ]
+        },
+                {
+            "name": "Python: Run with typst file and options",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "entrypoint.py",
+            "console": "integratedTerminal",
+            "args": [
+                "tests/valid.typ",
+                "--deps=tests/deps.txt",
+                ""
+            ]
+        },
+        {
+            "name": "Python: Run test suite",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "tests.py",
+            "console": "integratedTerminal",
+            "args": [
             ]
         }
     ]
