@@ -1,2 +1,3 @@
 *.pdf
 *.pyc
+tests/deps.txt
