@@ -9,17 +9,14 @@ def compile(filename: Path, options: list[str]) -> bool:
     Compiles a Typst file with the specified global options.
     Returns True if the typst command exited with status 0, False otherwise.
     """
-    command = ["typst", "compile"] + options + [str(filename)]
+    command = ["typst", "compileit"] + options + [str(filename)]
     logging.debug("Running: " + " ".join(command))
 
     result = subprocess.run(command, capture_output=True, text=True)
-    # TODO - use returncode option to make this try block unnecessary
-    try:
-        result.check_returncode()
-    except subprocess.CalledProcessError:
+    if result.returncode:
         logging.error(f"Compiling {filename} failed with stderr: \n {result.stderr}")
         return False
-
+    
     return True
 
 def read_path_file(file_path: str) -> list[str]:
