@@ -26,9 +26,10 @@ def read_path_file(file_path: str) -> list[str]:
     """
     lines = []
     with open(Path(file_path), "r") as f:
-        for line in f:
-            lines.append(line)
-        return strip_all_lines(lines)
+        for line in f: 
+            line = line.strip()
+            if line: lines.append(line)
+    return lines
 
 def parse_source_files(source_files_input: list[str]) -> list[Path]:
     """
@@ -61,12 +62,11 @@ def strip_all_lines(input_list: list[str]) -> list[str]:
     """
     Strips all whitespace surrounding each line in a list of strings. 
     """
-    output_list = []
+    lines = []
     for line in input_list:
         line = line.strip()
-        if line:
-            output_list.append(line)
-    return output_list
+        if line: lines.append(line)
+    return lines
 
 def main():
     logging.basicConfig(level=logging.INFO)
@@ -110,19 +110,16 @@ def main():
     version = subprocess.run(["typst", "--version"], capture_output=True, text=True).stdout
     logging.info(f"Using typst compiler version {version}.")
 
-    # Compile source files, recording compile process return status for each
-    success: dict[str, bool] = {}
+    # Compile source files, logging process return status for each
+    fail_count = 0
     for file in source_files:
         logging.info(f"Compiling {file}…")
-        success[str(file)] = compile(file, options)
-
-    # Log status of each compiler run.
-    for file, status in success.items():
+        status = compile(file, options)
+        if not status: fail_count += 1
         logging.info(f"{file}: {'✔' if status else '❌'}")
 
     # Exit with error code if any runs did not succeed
-    if not all(success.values()):
-        sys.exit(1)
+    if fail_count: sys.exit(1)
 
 if __name__ == "__main__":
     main()
