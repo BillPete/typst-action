@@ -9,7 +9,7 @@ def compile(filename: Path, options: list[str]) -> bool:
     Compiles a Typst file with the specified global options.
     Returns True if the typst command exited with status 0, False otherwise.
     """
-    command = ["typst", "compileit"] + options + [str(filename)]
+    command = ["typst", "compile"] + options + [str(filename)]
     logging.debug("Running: " + " ".join(command))
 
     result = subprocess.run(command, capture_output=True, text=True)
