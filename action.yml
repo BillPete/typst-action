@@ -8,26 +8,28 @@ branding:
 inputs:
   source_file:
     description: >
-      The typst file to be compiled. There can be multiple ones separated by new lines.
-    required: true
+      The typst file name(s), directory name(s), or a wildcard selection(s) to process.
+      Multiple items name can be specified by placing them on separate lines (using |).
+      If an item is an existing file, it will be compiled.
+      If an item is an existing directory name, all typst files in the directory will be compiled.
+      If an item contains a wildcard containing *, ?, or[], all files that match will be compiled. 
+      Either this argument or the path_file argument must be specified, but not both.
+    required: false
+    default: ""
   options:
     description: >
-      Line separated array of global options to pass to typst. Compared to a CLI call, with space
-      separated field, each file must be on its own lines. For example, to pass an additional font
-      path using the --font-path global command, the CLI call is
-
-        typst --font-path fonts main.typ
-
-      For the action, one must use one line per argument to ensure correct parsing, in the following
-      form:
-
-        - name: Typst
-          uses: lvignoli/typst-action@main
-          with:
-            source_file: main.typ
-            options: |
-              --font-path
-              fonts
+      Line separated array of global options to pass to typst. 
+      Each whitespace separated typst_compile option must be provided on a separate line (using |).
+    required: false
+    default: ""
+  path_file:
+    description: >
+      The name of a text file that contains items as described for the source_file argument.
+      Each item must be on a separate line in the file.
+      If an item is an existing file, it will be compiled.
+      If an item is an existing directory name, all typst files in the directory will be compiled.
+      If an item contains a wildcard containing *, ?, or[], all files that match will be compiled. 
+      Either this argument or the source_file argument must be specified, but not both.
     required: false
     default: ""
 runs:
@@ -36,3 +38,4 @@ runs:
   args:
     - ${{ inputs.source_file }}
     - ${{ inputs.options }}
+    - ${{ inputs.path_file }}
