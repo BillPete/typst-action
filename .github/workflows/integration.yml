@@ -4,7 +4,7 @@ jobs:
   build_multiple_files_with_options:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
       - name: Self test
         id: selftest
         uses: BillPete/typst-action@dev
@@ -21,7 +21,7 @@ jobs:
           test -e "tests/valid.pdf"
           test -e "tests/math.pdf"
       - name: upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v6
         with:
           name: Output PDF files
           path: tests/*.pdf
