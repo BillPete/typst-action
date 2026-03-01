@@ -13,7 +13,7 @@ inputs:
       If an item is an existing file, it will be compiled.
       If an item is an existing directory name, all typst files in the directory will be compiled.
       If an item contains a wildcard containing *, ?, or[], all files that match will be compiled. 
-      Either this argument or the path_file argument must be specified, but not both.
+      Either this argument or the path_file argument should be used, but both may not be used.
     required: false
     default: ""
   options:
@@ -29,7 +29,7 @@ inputs:
       If an item is an existing file, it will be compiled.
       If an item is an existing directory name, all typst files in the directory will be compiled.
       If an item contains a wildcard containing *, ?, or[], all files that match will be compiled. 
-      Either this argument or the source_file argument must be specified, but not both.
+      Either this argument or the source_file argument should be used, but both may not be used.
     required: false
     default: ""
 runs:
