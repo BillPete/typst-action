@@ -7,7 +7,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Self test
         id: selftest
-        uses: lvignoli/typst-action@develop
+        uses: BillPete/typst-action@dev
         with:
           source_file: |
             tests/valid.typ
