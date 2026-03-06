@@ -4,9 +4,9 @@ jobs:
   build_multiple_files_with_options:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - name: Self test
-        id: selftest
+      - name: Check Out Repository
+        uses: actions/checkout@v6
+      - name: Compile Test Files
         uses: BillPete/typst-action@dev
         with:
           source_file: |
@@ -14,15 +14,15 @@ jobs:
             tests/math.typ
           options: |
             --deps=tests/deps.txt
-      - name: Check existence of output file
+      - name: Check for Existence of Output Files
         run: |
           test -e "tests/valid.pdf"
           test -e "tests/math.pdf"
           test -e "tests/deps.txt"
-      - name: upload artifacts
+      - name: Upload Artifacts
         uses: actions/upload-artifact@v6
         with:
-          name: Output PDF files
+          name: Output Files
           path: |
             tests/*.pdf
             tests/deps.txt
