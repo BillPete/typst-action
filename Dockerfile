@@ -13,4 +13,6 @@ COPY \
 	entrypoint.py \
 	/root/
 
+ENV TYPST_FONT_PATHS=fonts
+
 ENTRYPOINT ["python3", "/root/entrypoint.py"]
