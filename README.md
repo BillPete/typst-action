@@ -44,7 +44,9 @@ jobs:
 
 ## Longer example
 
-Here we compile multiple files on each push, and publish all the PDFs in a tagged and timestamped release when the commit is tagged.
+Here we compile multiple files on each push while specifying the --font-path option to the typst compiler.
+After compiling all of the files we store artifacts (pdf files) in a zip file that will be uploaded to the github action. 
+We also publish all the PDFs in a tagged and timestamped release when the commit is tagged.
 
 ```yaml
 name: Build Typst document
@@ -61,14 +63,17 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Typst
-        uses: lvignoli/typst-action@main
+        uses: BillPete/typst-action@main
         with:
           source_file: |
             first_file.typ
             second_file.typ
             third_and_final_file.typ
+          options: |
+            --font-path
+            fonts
 
-      - name: Upload PDF file
+      - name: Upload PDF files
         uses: actions/upload-artifact@v3
         with:
           name: PDF
@@ -79,7 +84,7 @@ jobs:
         run: echo "DATE=$(date +%Y-%m-%d-%H:%M)" >> $GITHUB_ENV
 
       - name: Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         if: github.ref_type == 'tag'
         with:
           name: "${{ github.ref_name }} — ${{ env.DATE }}"
